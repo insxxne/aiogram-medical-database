@@ -1,5 +1,4 @@
 import json
-import pprint
 
 import requests
 from bs4 import BeautifulSoup
@@ -44,22 +43,37 @@ if requests.get(url).status_code == 200:
 
     diseases = soup.find('div', attrs={'class': 'diseases-list__items'})
 
-    #
+    item_element = {}
+
+    count = 1
+
     # for item in diseases.find_all('a'):
     #     if 'www.sm-stomatology.ru/patients/diseases/' in item.get('href'):
     #         continue
     #     else:
-    #         item_url = url + item.get('href')
+    #         item_url = 'http://www.smclinic.ru' + item.get('href')
     #         item_name = item.text
     #         item_desc = getMiniDesc(item.get('href'))
+    #
+    #         item_element[count] = {
+    #             'Имя': {
+    #                 item_name
+    #             },
+    #             'Описание': {
+    #                 item_desc
+    #             },
+    #             'Ссылка': {
+    #                 item_url
+    #             }
+    #         }
+    #
+    #         print(f'{item_name} : {count}')
+    #
+    #         count += 1
 
-        # with open('db_dict.json', 'w', encoding='utf-8') as file:
-        #     json.dump(item_element, file, indent=4, ensure_ascii=False, default=set_default)
+            # with open('diseases_dict.json', 'w', encoding='utf-8') as file:
+            #     json.dump(item_element, file, indent=4, ensure_ascii=False, default=set_default)
 
-
-    with open("db_dict.json", 'r', encoding='utf-8') as file:
+    with open("diseases_dict.json", 'r', encoding='utf-8') as file:
         json_data = file.read()
         data = json.loads(json_data)
-
-        print(len(data))
-
