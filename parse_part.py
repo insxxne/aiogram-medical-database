@@ -1,5 +1,4 @@
 import json
-
 import requests
 from bs4 import BeautifulSoup
 
@@ -11,12 +10,14 @@ headers = {
 
 
 def set_default(obj):
+    '''перерабатывает данные из кортежа в список'''
     if isinstance(obj, set):
         return list(obj)
     raise TypeError
 
 
 def getMiniDesc(link):
+    '''функция берет краткое описание болезни из шапки'''
     page_url = 'http://www.smclinic.ru' + link
     if requests.get(page_url).status_code == 200:
         page_r = requests.get(page_url)
@@ -29,6 +30,7 @@ def getMiniDesc(link):
 
 
 def getDesc(link):
+    '''функция берет полное описание болезни со страницы'''
     page_url = 'http://www.smclinic.ru' + link
     if requests.get(page_url).status_code == 200:
         page_r = requests.get(page_url)
@@ -47,6 +49,9 @@ if requests.get(url).status_code == 200:
 
     count = 1
 
+    '''дальше идет основной парсинг приложения. берутся ссылка, имя, описание, а после
+        перебрасываются в словарь
+    '''
     # for item in diseases.find_all('a'):
     #     if 'www.sm-stomatology.ru/patients/diseases/' in item.get('href'):
     #         continue
@@ -71,9 +76,13 @@ if requests.get(url).status_code == 200:
     #
     #         count += 1
 
-            # with open('diseases_dict.json', 'w', encoding='utf-8') as file:
-            #     json.dump(item_element, file, indent=4, ensure_ascii=False, default=set_default)
+    '''парсинг в json формат'''
 
+    # with open('diseases_dict.json', 'w', encoding='utf-8') as file:
+    #     json.dump(item_element, file, indent=4, ensure_ascii=False, default=set_default)
+
+
+    '''из json файла берутся данные для последующего отправления пользователю'''
     with open("diseases_dict.json", 'r', encoding='utf-8') as file:
         json_data = file.read()
         data = json.loads(json_data)

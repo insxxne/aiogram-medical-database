@@ -5,6 +5,8 @@ import asyncio
 from dotenv import load_dotenv
 from keyboard import kb_markup
 from benefit_utils import handler
+
+'''сокрытие секретного тг токена'''
 load_dotenv()
 bot = Bot(os.getenv('TOKEN'))
 
@@ -16,11 +18,16 @@ async def say_hello(message : Message):
 
 @dp.message()
 async def msg_handler(message : Message):
+    '''основная функция для общения с пользователем'''
     if message.text.title() == 'Рандом':
         data_from_db = handler(True)
-        await bot.send_message(message.chat.id, text=f'{data_from_db["Имя"][0]}\n\n'
+        if data_from_db != 'в базе не осталось статей':
+
+            await bot.send_message(message.chat.id, text=f'{data_from_db["Имя"][0]}\n\n'
                                                      f'{data_from_db["Описание"][0]}\n\n'
                                                      f'{data_from_db["Ссылка"][0]}')
+        else:
+            await bot.send_message(message.chat.id, text='в базе не осталось статей')
     else:
         await bot.send_message(message.chat.id, text='Я тебя не понимаю')
 
